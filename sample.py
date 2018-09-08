@@ -9,6 +9,10 @@ from keras.applications.vgg16 import VGG16
 from keras.preprocessing import image
 from keras.applications.vgg16 import preprocess_input
 import numpy as np
+import requests
+img_data = requests.get("http://farm1.static.flickr.com/48/120053944_9b69b35b5e_b.jpg", allow_redirects=False).content
+with open('image_name.jpg', 'wb') as handler:
+    handler.write(img_data)
 
 model = VGG16(include_top=True,weights='imagenet')
 model.layers.pop()
