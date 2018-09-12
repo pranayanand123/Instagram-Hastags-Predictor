@@ -34,15 +34,18 @@ labels = []
 model = VGG16(include_top=True,weights='imagenet')
 model.layers.pop()
 model.outputs = [model.layers[-1].output]
-i = 0
+#i = 0
+urls_dict = {}
 with open('NUS-WIDE-urls.txt','r') as f2:
     next(f2)
     for line in f2:
-        i=i+1
+        #i=i+1
         line_list = line.split()
         if line_list[1] in tags_dict.keys():
             #print(line_list[3])
             if line_list[3]!='null':
+                urls_dict[line_list[1]] = line_list[3]
+                '''
                 im = requests.get(line_list[3], allow_redirects=False)
                 if im.status_code==200:
                     img_data=im.content
@@ -57,10 +60,12 @@ with open('NUS-WIDE-urls.txt','r') as f2:
                     vgg16_feature = model.predict(img_data)
                     data.append(vgg16_feature)
                     labels.append(tags_dict[line_list[1]])
-                    print('Done: {}/{}'.format(i,269648))
+                    print('Done: {}/{}'.format(i,269648))'''
                     
-                    
-                
+with open('urls_dict.pickle','wb') as dfile:
+    _pickle.dump(urls_dict, dfile)
+    
+
                 
         
         
