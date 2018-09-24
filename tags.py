@@ -42,8 +42,9 @@ model.layers.pop()
 model.outputs = [model.layers[-1].output]
 image_list = os.listdir("images/")
 #i = 0
-try:
-    for i in image_list:
+for i in image_list:
+    try:
+    
         img = image.load_img("images/"+i, target_size=(224, 224))
         img_data = image.img_to_array(img)
         img_data = np.expand_dims(img_data, axis=0)
@@ -52,8 +53,17 @@ try:
         vgg16_feature = model.predict(img_data)
         data.append(vgg16_feature)
         labels.append(tags_dict[i.split(".")[0]])
-except:
-    print("Unexpected error:", sys.exc_info()[0])
+        print("Done")
+    except OSError:
+        print("Skipping" + i)
+        continue
+    
+data= np.array(data)  
+labels2 = labels
+labels2 = np.array(labels2)
+np.save('data.npy', data)
+np.save('labels.npy', labels2)
+
     
     
     
