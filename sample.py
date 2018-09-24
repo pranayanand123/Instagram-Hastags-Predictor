@@ -10,9 +10,9 @@ from keras.preprocessing import image
 from keras.applications.vgg16 import preprocess_input
 import numpy as np
 import requests
-img_data = requests.get("http://farm1.static.flickr.com/48/120053944_9b69b35b5e_b.jpg", allow_redirects=False).content
+'''img_data = requests.get("http://farm1.static.flickr.com/48/120053944_9b69b35b5e_b.jpg", allow_redirects=False).content
 with open('image_name.jpg', 'wb') as handler:
-    handler.write(img_data)
+    handler.write(img_data)'''
 
 model = VGG16(include_top=True,weights='imagenet')
 model.layers.pop()
@@ -20,7 +20,7 @@ model.layers.pop()
 model.outputs = [model.layers[-1].output]
 #model.layers[-1].outbound_nodes = []
 
-img_path = 'E:/ML projects/Instagram/Screenshot_20180519-211720.png'
+img_path = 'E:/ML projects/Instagram/images/40955048.jpg'
 img = image.load_img(img_path, target_size=(224, 224))
 img_data = image.img_to_array(img)
 img_data = np.expand_dims(img_data, axis=0)

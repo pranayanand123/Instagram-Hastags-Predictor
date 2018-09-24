@@ -14,6 +14,10 @@ import _pickle
 import requests
 import concurrent.futures
 import urllib.request
+from glob import glob
+import os
+import sys
+import re
 
 
 #Create tags dictionary with id as key and relevant tags as values
@@ -31,13 +35,28 @@ with open('tags_dict.pickle','rb') as pfile:
     tags_dict = _pickle.load(pfile) 
 
         
-'''data = []
+data = []
 labels = []
 model = VGG16(include_top=True,weights='imagenet')
 model.layers.pop()
-model.outputs = [model.layers[-1].output]'''
+model.outputs = [model.layers[-1].output]
+image_list = os.listdir("images/")
 #i = 0
-urls_dict = {}
+try:
+    for i in image_list:
+        img = image.load_img("images/"+i, target_size=(224, 224))
+        img_data = image.img_to_array(img)
+        img_data = np.expand_dims(img_data, axis=0)
+        img_data = preprocess_input(img_data)
+        
+        vgg16_feature = model.predict(img_data)
+        data.append(vgg16_feature)
+        labels.append(tags_dict[i.split(".")[0]])
+except:
+    print("Unexpected error:", sys.exc_info()[0])
+    
+    
+    
 with open('NUS-WIDE-urls.txt','r') as f2:
     next(f2)
     for line in f2:
@@ -84,7 +103,7 @@ def getimg(count):
         labels.append(tags_dict[list(urls_dict.keys())[count]])'''
         print('Done')
 with concurrent.futures.ThreadPoolExecutor(max_workers=50) as e:
-    for i in range(257784):
+    for i in range(2000):
         e.submit(getimg, i)
 
     
