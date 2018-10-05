@@ -18,6 +18,7 @@ from glob import glob
 import os
 import sys
 import re
+from model import NN
 
 
 #Create tags dictionary with id as key and relevant tags as values
@@ -115,7 +116,18 @@ def getimg(count):
 with concurrent.futures.ThreadPoolExecutor(max_workers=50) as e:
     for i in range(2000):
         e.submit(getimg, i)
+        
+        
+#Training Model
+        
+data = np.load('data.npy')
+labels = np.load('labels.npy')
 
+data = data/np.max(data)
+multiLabelBinarizer = MultiLabelBinarizer()
+labels = multiLabelBinarizer.fit_transform(labels)
+
+model = NN.build_model()
     
 
                 
